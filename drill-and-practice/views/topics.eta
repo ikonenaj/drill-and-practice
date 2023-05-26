@@ -13,7 +13,10 @@ Topic:<br/>
 <ul>
 <% it.topics.forEach(topic => { %>
     <li>
-    <%= topic.name %>
+        <a href="/topics/<%=topic.id%>"><%= topic.name %></a>
+        <form method="POST" action="/topics/<%= topic.id %>/delete">
+        <input type="submit" value="Delete">
+        </form>
     </li>
 <%});%>
 </ul>
