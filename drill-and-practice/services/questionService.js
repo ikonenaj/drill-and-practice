@@ -25,4 +25,8 @@ const deleteAnswerOption = async (id) => {
     await sql`DELETE FROM question_answer_options WHERE id = ${id}`;
 };
 
-export { createAnswerOption, createQuestion, deleteAnswerOption, getAnswerOptions, getQuestion, getQuestions };
+const deleteQuestion = async (id) => {
+    await sql`DELETE FROM questions WHERE id = ${id}`;
+};
+
+export { createAnswerOption, createQuestion, deleteAnswerOption, deleteQuestion, getAnswerOptions, getQuestion, getQuestions };

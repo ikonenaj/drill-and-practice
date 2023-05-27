@@ -26,5 +26,7 @@
     <%});%>
 </ul>
 <% } else { %>
-No answer options yet
+<form method="POST" action="/topics/<%=it.topic.id%>/questions/<%=it.question.id%>/delete">
+<input type="submit" value="Delete question">
+</form>
 <% } %>
