@@ -6,9 +6,9 @@
 
 <form method="POST" action="/topics/<%= it.topic.id %>/questions/<%= it.question.id %>">
     Answer:
-    <input type="textarea" name="option_text"></br>
+    <input type="textarea" name="option_text"><br/>
     Correct:
-    <input type="checkbox" name="is_correct"></br>
+    <input type="checkbox" name="is_correct"><br/>
     <input type="submit" value="Add">
 </form>
 

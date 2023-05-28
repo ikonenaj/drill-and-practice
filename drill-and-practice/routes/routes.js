@@ -1,4 +1,5 @@
 import { Router } from "../deps.js";
+import * as authController from "./controllers/authController.js";
 import * as mainController from "./controllers/mainController.js";
 import * as topicController from "./controllers/topicController.js";
 import * as questionController from "./controllers/questionController.js";
@@ -19,5 +20,10 @@ router.post("/topics/:id/questions/:qId", questionController.addAnswer);
 
 router.post("/topics/:id/questions/:qId/options/:oId/delete", questionController.deleteAnswerOption);
 router.post("/topics/:id/questions/:qId/delete", questionController.deleteQuestion);
+
+router.get("/auth/register", authController.showRegistrationPage);
+router.post("/auth/register", authController.register);
+router.get("/auth/login", authController.showLoginPage);
+router.post("/auth/login", authController.login);
 
 export { router };

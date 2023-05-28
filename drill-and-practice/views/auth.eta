@@ -1,0 +1,17 @@
+<% layout("./layouts/layout.eta") %>
+
+<h1><%= it.page %></h1>
+
+<form method="POST" action="/auth/<%= it.page.toLowerCase() %>">
+  Email:<br/>
+  <input type="email" name="email" /><br/>
+  Password:<br/>
+  <input type="password" name="password" /><br/>
+  <input type="submit" value="<%= it.page %>" />
+</form><br/>
+
+<% if (it.page == "Login") { %>
+<a href="/auth/register">Register</a>
+<% } else { %>
+<a href="/auth/login">Login</a>
+<% } %>
