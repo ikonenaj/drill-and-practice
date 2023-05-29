@@ -16,4 +16,13 @@ const deleteTopic = async (id) => {
     await sql`DELETE FROM topics WHERE id = ${id}`;
 };
 
-export { createTopic, deleteTopic, getTopics, getTopicById };
+const getTopicCount = async () => {
+    const rows =  await sql `SELECT COUNT(id) FROM topics`;
+    if (rows && rows.length > 0) {
+        return rows[0].count;
+    } else {
+        return 0;
+    }
+};
+
+export { createTopic, deleteTopic, getTopics, getTopicById, getTopicCount };
