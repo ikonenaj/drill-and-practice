@@ -10,13 +10,17 @@ const addTopic = async ({ request, response }) => {
     response.redirect("/topics");
 };
 
-const listTopics = async ({ render }) => {
-    render("topics.eta", { topics: await topicService.getTopics() });
+const listTopics = async ({ render, user }) => {
+    render("topics.eta", { topics: await topicService.getTopics(), user: user });
 };
 
-const deleteTopic = async ({ params, response }) => {
-    await topicService.deleteTopic(params.id);
-    response.redirect("/topics");
+const deleteTopic = async ({ params, response, user }) => {
+    if (user.admin) {
+        await topicService.deleteTopic(params.id);
+        response.redirect("/topics");
+    } else {
+        response.status = 401;
+    }
 };
 
 const showTopic = async ({ params, render }) => {
