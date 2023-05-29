@@ -7,6 +7,7 @@
 <h2>Add topic</h2>
 
 <form method="POST" action="/topics">
+<%~ includeFile('/partials/error.eta', {errors: it.errors, attribute: 'name'}) %>
 Topic:<br/>
 <input type="text" name="name" /><br/>
 <input type="submit" value="Add"/>
@@ -14,8 +15,20 @@ Topic:<br/>
 
 <% } %>
 
+<% function compare(a,b) {
+  if (a.name.toLowerCase() < b.name.toLowerCase()) {
+    return -1;
+  }
+  if (a.name.toLowerCase() > b.name.toLowerCase()) {
+    return 1;
+  }
+  return 0;
+} %>
+
+<% const sorted = it.topics.sort(compare) %>
+
 <ul>
-<% it.topics.forEach(topic => { %>
+<% sorted.forEach(topic => { %>
     <li>
         <a href="/topics/<%=topic.id%>"><%= topic.name %></a>
         <% if (it.user.admin) { %>

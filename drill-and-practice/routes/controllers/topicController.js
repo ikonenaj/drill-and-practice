@@ -1,17 +1,39 @@
 import * as topicService from "../../services/topicService.js";
 import * as questionService from "../../services/questionService.js";
+import { validasaur } from "../../deps.js";
 
-const addTopic = async ({ request, response }) => {
-    const body = request.body({ type: "form" });
-    const params = await body.value;
-
-    await topicService.createTopic(params.get("name"), 1);
-
-    response.redirect("/topics");
+const topicValidationRules = {
+    name: [validasaur.required, validasaur.minLength(1)]
 };
 
-const listTopics = async ({ render, user }) => {
-    render("topics.eta", { topics: await topicService.getTopics(), user: user });
+const addTopic = async ({ render, request, response, user }) => {
+    if (user.admin) {
+        const body = request.body({ type: "form" });
+        const params = await body.value;
+        const name = params.get("name");
+
+        const [passes, errors] = await validasaur.validate(
+            { name },
+            topicValidationRules
+        );
+
+        if (passes) {
+            await topicService.createTopic(name, user.id);
+            response.redirect("/topics");
+        } else {
+            console.log(errors);
+            await listTopics({ errors, render, user })
+        }
+
+    } else {
+        response.status = 401;
+    }
+};
+
+const listTopics = async ({ errors, render, user }) => {
+    const topics = await topicService.getTopics();
+    const data = { errors, topics, user };
+    render("topics.eta", data);
 };
 
 const deleteTopic = async ({ params, response, user }) => {

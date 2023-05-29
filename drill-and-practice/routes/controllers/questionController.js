@@ -1,11 +1,11 @@
 import * as questionService from "../../services/questionService.js";
 import { getTopicById } from "../../services/topicService.js";
 
-const addQuestion = async ({ params, request, response }) => {
+const addQuestion = async ({ params, request, response, user }) => {
     const body = request.body({ type: "form" });
     const qParams = await body.value;
 
-    await questionService.createQuestion(1, params.id, qParams.get("question_text"));
+    await questionService.createQuestion(user.id, params.id, qParams.get("question_text"));
     response.redirect(`/topics/${params.id}`);
 };
 
