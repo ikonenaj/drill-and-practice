@@ -2,6 +2,12 @@ import * as topicService from "../../services/topicService.js";
 import * as questionService from "../../services/questionService.js";
 import { validasaur } from "../../deps.js";
 
+const listTopics = async ({ errors, render, user }) => {
+    const topics = await topicService.getTopics();
+    const data = { errors, topics, user };
+    render("topics.eta", data);
+};
+
 const topicValidationRules = {
     name: [validasaur.required, validasaur.minLength(1)]
 };
@@ -30,14 +36,9 @@ const addTopic = async ({ render, request, response, user }) => {
     }
 };
 
-const listTopics = async ({ errors, render, user }) => {
-    const topics = await topicService.getTopics();
-    const data = { errors, topics, user };
-    render("topics.eta", data);
-};
-
 const deleteTopic = async ({ params, response, user }) => {
     if (user.admin) {
+        await questionService.deleteQuestions(params.id);
         await topicService.deleteTopic(params.id);
         response.redirect("/topics");
     } else {
@@ -45,13 +46,19 @@ const deleteTopic = async ({ params, response, user }) => {
     }
 };
 
-const showTopic = async ({ params, render }) => {
+const showTopic = async ({ errors, params, render, response }) => {
     const topic = await topicService.getTopicById(params.id);
-    const data = {
-        topic: topic[0],
-        questions: await questionService.getQuestions(params.id),
-    };
-    render("topic.eta", data);
+    if (topic && topic.length > 0) {
+        const data = {
+            errors: errors,
+            topic: topic[0],
+            questions: await questionService.getQuestions(params.id),
+        };
+        render("topic.eta", data);
+    } else {
+        response.status = 404;
+    }
+    
 };
 
 export { addTopic, deleteTopic, listTopics, showTopic };

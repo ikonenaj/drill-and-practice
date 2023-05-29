@@ -29,6 +29,10 @@ const deleteQuestion = async (id) => {
     await sql`DELETE FROM questions WHERE id = ${id}`;
 };
 
+const deleteQuestions = async (topic_id) => {
+    await sql`DELETE FROM questions WHERE topic_id = ${topic_id}`;
+};
+
 const getQuestionCount = async () => {
     const rows = await sql`SELECT COUNT(id) FROM questions`;
     if (rows && rows.length > 0) {
@@ -47,4 +51,4 @@ const getAnswerCount = async () => {
     }
 };
 
-export { createAnswerOption, createQuestion, deleteAnswerOption, deleteQuestion, getAnswerCount, getAnswerOptions, getQuestion, getQuestionCount, getQuestions };
+export { createAnswerOption, createQuestion, deleteAnswerOption, deleteQuestion, deleteQuestions, getAnswerCount, getAnswerOptions, getQuestion, getQuestionCount, getQuestions };

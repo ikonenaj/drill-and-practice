@@ -1,12 +1,29 @@
+import { validasaur } from "../../deps.js";
 import * as questionService from "../../services/questionService.js";
 import { getTopicById } from "../../services/topicService.js";
+import { showTopic } from "./topicController.js";
 
-const addQuestion = async ({ params, request, response, user }) => {
+const questionValidationRules = {
+    question_text: [validasaur.required, validasaur.minLength(1)]
+};
+
+const addQuestion = async ({ params, render, request, response, user }) => {
     const body = request.body({ type: "form" });
     const qParams = await body.value;
+    const question_text = qParams.get("question_text");
 
-    await questionService.createQuestion(user.id, params.id, qParams.get("question_text"));
-    response.redirect(`/topics/${params.id}`);
+    const [passes, errors] = await validasaur.validate(
+        { question_text },
+        questionValidationRules
+    );
+
+    if (passes) {
+        await questionService.createQuestion(user.id, params.id, question_text);
+        response.redirect(`/topics/${params.id}`);
+    } else {
+        console.log(errors);
+        await showTopic({ errors, params, render, response });
+    }
 };
 
 const viewQuestion = async ({ params, render }) => {
