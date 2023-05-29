@@ -30,7 +30,7 @@ const deleteQuestion = async (id) => {
 };
 
 const getQuestionCount = async () => {
-    const rows = sql`SELECT COUNT(id) FROM questions`;
+    const rows = await sql`SELECT COUNT(id) FROM questions`;
     if (rows && rows.length > 0) {
         return rows[0].count;
     } else {
@@ -39,7 +39,7 @@ const getQuestionCount = async () => {
 };
 
 const getAnswerCount = async () => {
-    const rows = sql`SELECT COUNT(id) FROM question_answers`;
+    const rows = await sql`SELECT COUNT(id) FROM question_answers`;
     if (rows && rows.length > 0) {
         return rows[0].count;
     } else {
