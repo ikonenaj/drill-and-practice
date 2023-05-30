@@ -3,8 +3,10 @@
 <h1><%= it.page %></h1>
 
 <form method="POST" action="/auth/<%= it.page.toLowerCase() %>">
+  <%~ includeFile('/partials/error.eta', {errors: it.errors, attribute: 'email'}) %>
+  <%~ includeFile('/partials/error.eta', {errors: it.errors, attribute: 'password'}) %>
   Email:<br/>
-  <input type="email" name="email" /><br/>
+  <input type="email" name="email" value="<% if (it.errors) { %><%= it.errors.emailValue %><% } else { %><% } %>"/><br/>
   Password:<br/>
   <input type="password" name="password" /><br/>
   <input type="submit" value="<%= it.page %>" />

@@ -3,34 +3,63 @@ import { validasaur } from "../../deps.js";
 import * as authService from "../../services/authService.js";
 
 const authValidationRules = {
-  
-}
-
-const showRegistrationPage = ({ render }) => {
-    render("auth.eta", { page: "Register" });
+  email: [validasaur.required, validasaur.isEmail],
+  password: [validasaur.required, validasaur.minLength(4)]
 };
 
-const showLoginPage = ({ render }) => {
-    render("auth.eta", { page: "Login" })
+const showRegistrationPage = ({ errors, render }) => {
+    const data = {
+      errors: errors,
+      page: "Register"
+    };
+    render("auth.eta", data);
 };
 
-const register = async ({ request, response }) => {
+const showLoginPage = ({ errors, render }) => {
+  const data = {
+    errors: errors,
+    page: "Login"
+  };
+  render("auth.eta", data);
+};
+
+const register = async ({ render, request, response }) => {
     const body = request.body({ type: "form" });
     const params = await body.value;
-
-    await authService.registerUser(params.get("email"), await bcrypt.hash(params.get("password")));
-    response.redirect("/auth/login");
-};
-
-const login = async ({ request, response, state }) => {
-    const body = request.body({ type: "form" });
-    const params = await body.value;
+    const email = params.get("email");
+    const password = params.get("password");
     
-    const userFromDatabase = await authService.findUserByEmail(
-        params.get("email"),
-      );
+    const [passes, errors] = await validasaur.validate(
+      { email, password },
+      authValidationRules
+    );
+
+    if (passes) {
+      await authService.registerUser(email, await bcrypt.hash(password));
+      response.redirect("/auth/login");
+    } else {
+      errors.emailValue = email;
+      console.log(errors);
+      showRegistrationPage({ errors, render });
+    }
+};
+
+const login = async ({ render, request, response, state }) => {
+    const body = request.body({ type: "form" });
+    const params = await body.value;
+    const email = params.get("email");
+    const password = params.get("password");
+
+    const [passes, errors] = await validasaur.validate(
+      { email, password },
+      authValidationRules
+    );
+    
+    const userFromDatabase = await authService.findUserByEmail(email);
       if (userFromDatabase.length != 1) {
-        response.redirect("/auth/login");
+        errors.email = { email: "Incorrect email" };
+        errors.emailValue = '';
+        showLoginPage({ errors, render });
         return;
       }
     
@@ -41,7 +70,9 @@ const login = async ({ request, response, state }) => {
       );
     
       if (!passwordMatches) {
-        response.redirect("/auth/login");
+        errors.password = { password: "Incorrect password" };
+        errors.emailValue = email;
+        showLoginPage({ errors, render });
         return;
       }
     
