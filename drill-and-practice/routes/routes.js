@@ -3,6 +3,7 @@ import * as authController from "./controllers/authController.js";
 import * as mainController from "./controllers/mainController.js";
 import * as topicController from "./controllers/topicController.js";
 import * as questionController from "./controllers/questionController.js";
+import * as quizController from "./controllers/quizController.js";
 
 const router = new Router();
 
@@ -25,5 +26,8 @@ router.get("/auth/register", authController.showRegistrationPage);
 router.post("/auth/register", authController.register);
 router.get("/auth/login", authController.showLoginPage);
 router.post("/auth/login", authController.login);
+
+router.get("/quiz", quizController.listTopics);
+router.get("/quiz/:id", quizController.getRandomQuestion)
 
 export { router };

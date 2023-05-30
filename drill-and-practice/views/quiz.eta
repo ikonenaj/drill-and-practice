@@ -1,0 +1,23 @@
+<% layout("./layouts/layout.eta") %>
+
+<h1>Topics</h1>
+
+<% function compare(a,b) {
+  if (a.name.toLowerCase() < b.name.toLowerCase()) {
+    return -1;
+  }
+  if (a.name.toLowerCase() > b.name.toLowerCase()) {
+    return 1;
+  }
+  return 0;
+} %>
+
+<% const sorted = it.topics.sort(compare) %>
+
+<ul>
+<% sorted.forEach(topic => { %>
+    <li>
+        <a href="/quiz/<%=topic.id%>"><%= topic.name %></a>
+    </li>
+<%});%>
+</ul>
