@@ -1,5 +1,10 @@
 import { bcrypt } from "../../deps.js";
+import { validasaur } from "../../deps.js";
 import * as authService from "../../services/authService.js";
+
+const authValidationRules = {
+  
+}
 
 const showRegistrationPage = ({ render }) => {
     render("auth.eta", { page: "Register" });
