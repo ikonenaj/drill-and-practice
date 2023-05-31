@@ -31,5 +31,7 @@ router.get("/quiz", quizController.listTopics);
 router.get("/quiz/:id", quizController.getRandomQuestion);
 router.get("/quiz/:id/questions/:qId", quizController.showRandomQuestion);
 router.post("/quiz/:id/questions/:qId/options/:oId", quizController.saveAnswer);
+router.get("/quiz/:id/questions/:qId/correct", quizController.correctAnswer);
+router.get("/quiz/:id/questions/:qId/incorrect", quizController.incorrectAnswer);
 
 export { router };

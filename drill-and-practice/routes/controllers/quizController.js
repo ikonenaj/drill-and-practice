@@ -28,12 +28,33 @@ const showRandomQuestion = async ({ params, render, response }) => {
             answerOptions: answerOptions
         };
         render("random.eta", data);
+    } else {
+        response.status = 404;
     }
+};
+
+const correctAnswer = ({ params, render }) => {
+    const data = {
+        topicId: params.id,
+        isCorrect: true
+    };
+    render("result.eta", data);
+};
+
+const incorrectAnswer = async ({ params, render }) => {
+    const answerOptions = await questionService.getAnswerOptions(params.qId);
+    const correctOption = answerOptions.find((option) => option.is_correct);
+    const data = {
+        topicId: params.id,
+        correctOption: correctOption,
+        isCorrect: false
+    };
+    render("result.eta", data);
 };
 
 const saveAnswer = async ({ params, response, user }) => {
     await quizService.saveAnswer(user.id, params.qId, params.oId);
-    const rows = questionService.getAnswerOption(params.oId);
+    const rows = await questionService.getAnswerOption(params.oId);
     if (rows && rows.length > 0) {
         const option = rows[0];
         if (option.is_correct) {
@@ -46,4 +67,4 @@ const saveAnswer = async ({ params, response, user }) => {
     }
 };
 
-export { listTopics, getRandomQuestion, saveAnswer, showRandomQuestion };
+export { correctAnswer, incorrectAnswer, listTopics, getRandomQuestion, saveAnswer, showRandomQuestion };
