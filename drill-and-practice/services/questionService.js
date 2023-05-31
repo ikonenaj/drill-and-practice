@@ -55,4 +55,8 @@ const getAnswerCount = async () => {
     }
 };
 
-export { createAnswerOption, createQuestion, deleteAnswerOption, deleteQuestion, deleteQuestions, getAnswerCount, getAnswerOption, getAnswerOptions, getQuestion, getQuestionCount, getQuestions };
+const getRandomQuestion = async () => {
+    return await sql`SELECT * FROM questions ORDER BY RANDOM() LIMIT 1`;
+};
+
+export { createAnswerOption, createQuestion, deleteAnswerOption, deleteQuestion, deleteQuestions, getAnswerCount, getAnswerOption, getAnswerOptions, getQuestion, getQuestionCount, getQuestions, getRandomQuestion };
