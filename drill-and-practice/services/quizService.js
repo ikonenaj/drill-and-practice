@@ -9,4 +9,8 @@ const getRandomQuestion = async (topic_id) => {
     return await sql`SELECT * FROM questions WHERE id = ${id}`;
 };
 
-export { getRandomQuestion, getRandomQuestionId };
+const saveAnswer = async (user_id, question_id, question_answer_option_id) => {
+    await sql`INSERT INTO question_answers (user_id, question_id, question_answer_option_id) VALUES (${user_id}, ${question_id}, ${question_answer_option_id})`;
+};
+
+export { getRandomQuestion, getRandomQuestionId, saveAnswer };

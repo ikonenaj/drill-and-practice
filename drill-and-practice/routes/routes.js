@@ -28,6 +28,8 @@ router.get("/auth/login", authController.showLoginPage);
 router.post("/auth/login", authController.login);
 
 router.get("/quiz", quizController.listTopics);
-router.get("/quiz/:id", quizController.getRandomQuestion)
+router.get("/quiz/:id", quizController.getRandomQuestion);
+router.get("/quiz/:id/questions/:qId", quizController.showRandomQuestion);
+router.post("/quiz/:id/questions/:qId/options/:oId", quizController.saveAnswer);
 
 export { router };

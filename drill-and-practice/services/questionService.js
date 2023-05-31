@@ -20,6 +20,10 @@ const getAnswerOptions = async (question_id) => {
     return await sql`SELECT * FROM question_answer_options WHERE question_id = ${question_id}`;
 };
 
+const getAnswerOption = async (id) => {
+    return await sql`SELECT * FROM question_answer_options WHERE id = ${id}`;
+};
+
 const deleteAnswerOption = async (id) => {
     await sql`DELETE FROM question_answers WHERE question_answer_option_id = ${id}`;
     await sql`DELETE FROM question_answer_options WHERE id = ${id}`;
@@ -51,4 +55,4 @@ const getAnswerCount = async () => {
     }
 };
 
-export { createAnswerOption, createQuestion, deleteAnswerOption, deleteQuestion, deleteQuestions, getAnswerCount, getAnswerOptions, getQuestion, getQuestionCount, getQuestions };
+export { createAnswerOption, createQuestion, deleteAnswerOption, deleteQuestion, deleteQuestions, getAnswerCount, getAnswerOption, getAnswerOptions, getQuestion, getQuestionCount, getQuestions };
