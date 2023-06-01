@@ -20,7 +20,7 @@ const addTopic = async ({ render, request, response, user }) => {
 
         const [passes, errors] = await validasaur.validate(
             { name },
-            topicValidationRules
+            topicValidationRules,
         );
 
         if (passes) {
