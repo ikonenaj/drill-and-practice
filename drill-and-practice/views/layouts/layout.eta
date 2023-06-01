@@ -1,1 +1,22 @@
-<%~ it.body %>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Drill&Practice</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.19/dist/css/uikit.min.css" />
+  </head>
+  <body>
+    <nav class="border fixed split-nav">
+        <div class="collapsible">
+            <div class="collapsible-body">
+                <ul class="inline">
+                    <li><a href="/topics">Topics</a></li>
+                    <li><a href="/quiz">Quiz</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <%~ it.body %>
+  </body>
+</html>
