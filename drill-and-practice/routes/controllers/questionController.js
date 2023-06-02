@@ -46,7 +46,7 @@ const viewQuestion = async ({ errors, params, render, response }) => {
     }
 };
 
-const addAnswer = async ({ params, render, request, response }) => {
+const addAnswerOption = async ({ params, render, request, response }) => {
     const body = request.body({ type: "form" });
     const aParams = await body.value;
     const option_text = aParams.get("option_text");
@@ -79,4 +79,4 @@ const deleteQuestion = async ({ params, response }) => {
     response.redirect(`/topics/${params.id}`);
 };
 
-export { addAnswer, addQuestion, deleteAnswerOption, deleteQuestion, viewQuestion };
+export { addAnswerOption, addQuestion, deleteAnswerOption, deleteQuestion, viewQuestion };
