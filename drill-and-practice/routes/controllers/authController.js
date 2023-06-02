@@ -34,6 +34,14 @@ const register = async ({ render, request, response }) => {
       authValidationRules
     );
 
+    const rows = await authService.findUserByEmail(email);
+      if (rows && rows.length > 0) {
+        errors.emailValue = email;
+        errors.email = { email: "Email is already registered" };
+        showRegistrationPage({ errors, render });
+        return;
+      }
+
     if (passes) {
       await authService.registerUser(email, await bcrypt.hash(password));
       response.redirect("/auth/login");
@@ -58,7 +66,7 @@ const login = async ({ render, request, response, state }) => {
     const userFromDatabase = await authService.findUserByEmail(email);
       if (userFromDatabase.length != 1) {
         errors.email = { email: "Incorrect email" };
-        errors.emailValue = '';
+        errors.emailValue = email;
         showLoginPage({ errors, render });
         return;
       }
