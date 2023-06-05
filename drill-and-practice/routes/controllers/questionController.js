@@ -46,7 +46,7 @@ const viewQuestion = async ({ errors, params, render, response }) => {
     }
 };
 
-const addAnswerOption = async ({ params, render, request, response }) => {
+const addAnswerOption = async ({ params, render, request, response, user }) => {
     const body = request.body({ type: "form" });
     const aParams = await body.value;
     const option_text = aParams.get("option_text");
@@ -60,7 +60,7 @@ const addAnswerOption = async ({ params, render, request, response }) => {
         optionValidationRules
     );
 
-    if (passes) {
+    if (passes && user.id) {
         await questionService.createAnswerOption(params.qId, option_text, isCorrect);
         response.redirect(`/topics/${params.id}/questions/${params.qId}`);
     } else {
